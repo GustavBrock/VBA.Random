@@ -64,4 +64,5 @@ Included is a Microsoft Access example application and Microsoft Excel example w
 *If you wish to support my work or need extended support or advice, feel free to:*
 
 <p>
+
 [<img src="https://raw.githubusercontent.com/GustavBrock/VBA.Random/master/images/BuyMeACoffee.png">](https://www.buymeacoffee.com/gustav/)
