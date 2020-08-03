@@ -11,7 +11,8 @@ This service is a web API for the quantum random number generator [Quantis](http
 
 <center>![Polarising Beam Splitter](images/polarising_beam_splitter.png)</center>
 
-Very innovative idea. Please study the links above for the details.
+Very innovative idea. Please study the links above for the details and the white paper:
+[What is the Q in QRNG?](https://marketing.idquantique.com/acton/attachment/11868/f-0226/1/)
 
 ### Getting access
 
