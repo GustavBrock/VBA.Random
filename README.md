@@ -48,7 +48,7 @@ It takes the same argument and values but - due to the higher resolution - retur
 
 ### Code
 
-Code has been tested with both 32-bit and 64-bit Microsoft Access 2019 and 365.
+Code has been tested with both 32-bit and 64-bit Microsoft Access and Excel 2019 and 365.
 
 ### Documentation
 
