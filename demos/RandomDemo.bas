@@ -2,8 +2,8 @@ Attribute VB_Name = "RandomDemo"
 Option Explicit
 
 ' Functions for demonstration of truly random numbers.
-' 2019-12-26. Gustav Brock, Cactus Data ApS, CPH.
-' Version 1.0.0.
+' 2020-10-17. Gustav Brock, Cactus Data ApS, CPH.
+' Version 1.0.1.
 ' --------------
 
 
@@ -102,6 +102,125 @@ Public Function ThrowDice( _
     End If
     
     ThrowDice = DiceTrows
+
+End Function
+
+' Quickly sort a Variant array.
+'
+' The array does not have to be zero- or one-based.
+'
+' 2018-03-16. Gustav Brock, Cactus Data ApS, CPH.
+'
+Public Sub QuickSort(ByRef Values As Variant)
+
+    Dim Lows()      As Variant
+    Dim Mids()      As Variant
+    Dim Tops()      As Variant
+    Dim Pivot       As Variant
+    Dim Lower       As Long
+    Dim Upper       As Long
+    Dim UpperLows   As Long
+    Dim UpperMids   As Long
+    Dim UpperTops   As Long
+    
+    Dim Value       As Variant
+    Dim Item        As Long
+    Dim Index       As Long
+ 
+    ' Find count of elements to sort.
+    Lower = LBound(Values)
+    Upper = UBound(Values)
+    If Lower = Upper Then
+        ' One element only.
+        ' Nothing to do.
+        Exit Sub
+    End If
+    
+    
+    ' Choose pivot in the middle of the array.
+    Pivot = Values(Int((Upper - Lower) / 2) + Lower)
+    ' Construct arrays.
+    For Each Value In Values
+        If Value < Pivot Then
+            ReDim Preserve Lows(UpperLows)
+            Lows(UpperLows) = Value
+            UpperLows = UpperLows + 1
+        ElseIf Value > Pivot Then
+            ReDim Preserve Tops(UpperTops)
+            Tops(UpperTops) = Value
+            UpperTops = UpperTops + 1
+        Else
+            ReDim Preserve Mids(UpperMids)
+            Mids(UpperMids) = Value
+            UpperMids = UpperMids + 1
+        End If
+    Next
+    
+    ' Sort the two split arrays, Lows and Tops.
+    If UpperLows > 0 Then
+        QuickSort Lows()
+    End If
+    If UpperTops > 0 Then
+        QuickSort Tops()
+    End If
+    
+    ' Concatenate the three arrays and return Values.
+    Item = 0
+    For Index = 0 To UpperLows - 1
+        Values(Lower + Item) = Lows(Index)
+        Item = Item + 1
+    Next
+    For Index = 0 To UpperMids - 1
+        Values(Lower + Item) = Mids(Index)
+        Item = Item + 1
+    Next
+    For Index = 0 To UpperTops - 1
+        Values(Lower + Item) = Tops(Index)
+        Item = Item + 1
+    Next
+
+End Sub
+
+' Sum the top pip values of a single throw of dice.
+' If a top count is not specified, the pip values of all the dice are summed.
+'
+' 2020-10-17. Gustav Brock, Cactus Data ApS, CPH.
+'
+Public Function DiceSum( _
+    ByVal DieCount As Integer, _
+    Optional ByVal TopCount As Integer) _
+    As Integer
+    
+    Dim Throws()    As Integer
+    Dim Dice()      As Integer
+    Dim TopSum      As Integer
+    Dim Index       As Integer
+    Dim Count       As Integer
+    
+    If TopCount <= 0 Then
+        TopCount = DieCount
+    End If
+    
+    ' Retrieve two-dimension array with one throw of the dice.
+    Throws = ThrowDice(1, DieCount)
+    
+    ' Convert array to one dimension only
+    ReDim Dice(LBound(Throws, 1) To UBound(Throws, 1))
+    For Index = LBound(Dice) To UBound(Dice)
+        Dice(Index) = Throws(Index, 1)
+    Next
+    ' Sort the dice by the pip values ascending.
+    QuickSort Dice
+    
+    ' Sum the top pip values
+    Index = UBound(Dice)
+    While Index >= LBound(Dice) And Count < TopCount
+        TopSum = TopSum + Dice(Index)
+        Index = Index - 1
+        Count = Count + 1
+    Wend
+    
+    DiceSum = TopSum
 
 End Function
 
